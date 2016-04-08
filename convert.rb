@@ -3,6 +3,12 @@
 require './screenshoot'
 
 puts 'Starting conversion...'
-input = 'test.png'
+
+input = ARGV[0]
+unless input
+  puts 'Error: file required'
+  exit
+end
+
 ScreenShoot.convert_image(input)
-puts 'Conversion successful'
+puts "\nConversion done"
