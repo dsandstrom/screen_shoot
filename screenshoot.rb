@@ -8,7 +8,9 @@ require 'mini_magick'
 # MiniMagick.logger.level = Logger::DEBUG
 
 class ScreenShoot
-  def self.convert_image(input)
+  def initialize(*args); end
+
+  def convert_image(input)
     return unless File.exists?(input)
 
     name = File.basename(input, '.*')
@@ -24,10 +26,10 @@ class ScreenShoot
     puts "Converted: #{image.width}x#{image.height}"
   end
 
-  def self.convert_images(directory)
+  def convert_images(directory)
     puts "\nConverting all png files in #{File.basename(directory)}"
     Dir["#{directory}/*.png"].each do |file|
-      ScreenShoot.convert_image(file)
+      convert_image(file)
     end
   end
 end

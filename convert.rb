@@ -10,10 +10,11 @@ unless input
   exit
 end
 
+screen_shoot = ScreenShoot.new
 if File.file?(input)
-  ScreenShoot.convert_image(input)
+  screen_shoot.convert_image(input)
 elsif File.directory?(input)
-  ScreenShoot.convert_images(input)
+  screen_shoot.convert_images(input)
 end
 
 puts "\nConversion done"
