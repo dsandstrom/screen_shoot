@@ -10,5 +10,10 @@ unless input
   exit
 end
 
-ScreenShoot.convert_image(input)
+if File.file?(input)
+  ScreenShoot.convert_image(input)
+elsif File.directory?(input)
+  ScreenShoot.convert_images(input)
+end
+
 puts "\nConversion done"
