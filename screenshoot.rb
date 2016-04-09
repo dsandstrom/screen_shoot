@@ -5,31 +5,39 @@ require 'bundler/setup'
 
 require 'mini_magick'
 
-# MiniMagick.logger.level = Logger::DEBUG
-
 class ScreenShoot
-  def initialize(*args); end
+  attr_accessor :original_path, :directory, :original_name, :new_name, :new_path
 
-  def convert_image(input)
-    return unless File.exists?(input)
+  def initialize(input)
+    self.original_path = input
+    return unless File.exists?(original_path)
 
-    name = File.basename(input, '.*')
-    puts "\nStarting: #{name}"
-    directory = File.dirname(input)
-    new_name = "#{name}.jpg"
+    self.directory = File.dirname(input)
+    self.original_name = File.basename(input, '.*')
+    self.new_name = "#{@original_name}.jpg"
+    self.new_path = File.join(@directory, @new_name)
+  end
 
-    image = MiniMagick::Image.open(input)
+  def valid?
+    [directory, original_name, new_name, new_path].all? { |m| !!m }
+  end
+
+  def convert_image
+    return unless valid?
+
+    puts "\nStarting: #{original_name}"
+    image = MiniMagick::Image.open(original_path)
     image.resize '1600x'
     image.format 'jpg'
     image.quality 80
-    image.write File.join(directory, "#{name}.jpg")
+    image.write new_path
     puts "Converted: #{image.width}x#{image.height}"
   end
 
-  def convert_images(directory)
+  def self.convert_images(directory)
     puts "\nConverting all png files in #{File.basename(directory)}"
     Dir["#{directory}/*.png"].each do |file|
-      convert_image(file)
+      ScreenShoot.new(file).convert_image
     end
   end
 end

@@ -6,15 +6,16 @@ puts 'Starting conversion...'
 
 input = ARGV[0]
 unless input
-  puts 'Error: file required'
+  puts 'Error: file or folder required'
   exit
 end
 
-screen_shoot = ScreenShoot.new
 if File.file?(input)
-  screen_shoot.convert_image(input)
+  ScreenShoot.new(input).convert_image
 elsif File.directory?(input)
-  screen_shoot.convert_images(input)
+  ScreenShoot.convert_images(input)
+else
+  puts "\nError: no files found"
 end
 
 puts "\nConversion done"
