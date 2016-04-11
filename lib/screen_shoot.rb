@@ -28,6 +28,10 @@ class ScreenShoot
     File.join(directory, new_name)
   end
 
+  def new_file
+    File.new(new_path)
+  end
+
   def temp_name
     "#{base_name}.temp.jpg"
   end
@@ -36,8 +40,8 @@ class ScreenShoot
     File.join(directory, temp_name)
   end
 
-  def valid?
-    [directory, base_name].all? { |m| !m.nil? && !m.empty? }
+  def temp_file
+    File.new(temp_path)
   end
 
   def convert_to_jpg
@@ -52,9 +56,7 @@ class ScreenShoot
   def optimize
     unoptimized_size = pretty_file_size(temp_path)
     ImageOptimizer.new(temp_path, quiet: true).optimize
-    temp_file = File.new(temp_path)
     FileUtils.cp(temp_path, new_path)
-    new_file = File.new(new_path)
     Mozjpeg.compress(
       temp_file,
       new_file,
@@ -81,8 +83,14 @@ class ScreenShoot
 
   private
 
+  def valid?
+    [directory, base_name].all? { |m| !m.nil? && !m.empty? }
+  end
+
   def pretty_file_size(path)
     size = File.size(path)
+    return unless size
+
     Filesize.from("#{size} B").pretty
   end
 end
