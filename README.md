@@ -9,3 +9,7 @@ $ bin/convert path/to/file.png
 # directory
 $ bin/convert path/to/folder
 ```
+
+### Requirements
+* imagemagick
+* jpegoptim
