@@ -5,27 +5,34 @@ require 'bundler/setup'
 
 require 'mini_magick'
 
+# Convert PNG screenshots to web-friendly images
 class ScreenShoot
-  attr_accessor :original_path, :directory, :original_name, :new_name, :new_path
+  attr_accessor :original_path, :directory, :base_name
 
   def initialize(input)
     self.original_path = input
-    return unless File.exists?(original_path)
+    return unless File.exist?(original_path)
 
     self.directory = File.dirname(input)
-    self.original_name = File.basename(input, '.*')
-    self.new_name = "#{@original_name}.jpg"
-    self.new_path = File.join(@directory, @new_name)
+    self.base_name = File.basename(input, '.*')
+  end
+
+  def new_name
+    "#{base_name}.jpg"
+  end
+
+  def new_path
+    File.join(directory, new_name)
   end
 
   def valid?
-    [directory, original_name, new_name, new_path].all? { |m| !!m }
+    [directory, base_name].all? { |m| !m.nil? && !m.empty? }
   end
 
   def convert_image
     return unless valid?
 
-    puts "\nStarting: #{original_name}"
+    puts "\nStarting: #{base_name}"
     image = MiniMagick::Image.open(original_path)
     image.resize '1600x'
     image.format 'jpg'
