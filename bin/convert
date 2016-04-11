@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require './screen_shoot'
+require_relative '../lib/screen_shoot'
 
 puts 'Starting conversion...'
 

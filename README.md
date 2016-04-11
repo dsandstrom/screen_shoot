@@ -3,9 +3,9 @@
 Convert png files to jpg, resize to 1600px wide, and compress 80%.
 
 ### How to Use
-```rb
+```shell
 # file
-convert.rb path/to/file.png
+$ bin/convert path/to/file.png
 # directory
-convert.rb path/to/folder
+$ bin/convert path/to/folder
 ```
